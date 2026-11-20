@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#292e1d">
+  <meta name="description" content="Confirme sua presença no aniversário de 1 ano do Isaac, com tema safári.">
+  <title>Safári do Isaac | 1 aninho</title>
+  <link rel="stylesheet" href="/css/estilos.css">
+  <link rel="stylesheet" href="/css/animais.css">
+  <script type="module" src="/js/principal.js"></script>
+</head>
+<body>
+  <!-- Abertura da festa -->
+  <header class="abertura" id="inicio">
+    <div class="cena">
+      <div class="mata" aria-hidden="true"></div>
+      <div class="sombra" aria-hidden="true"></div>
+      <div class="macacos" aria-hidden="true">
+        <div class="cipo cipo-esquerdo"><img src="/assets/macaco-esquerdo.webp" alt=""></div>
+        <div class="cipo cipo-direito"><img src="/assets/macaco-direito.webp" alt=""></div>
+      </div>
+      <div class="marca"><span aria-hidden="true">✦</span> Convite de aniversário</div>
+
+      <div class="titulo">
+        <h1><span>Safári do</span><strong>Isaac</strong></h1>
+        <p class="idade"><span aria-hidden="true">✦</span> 1 aninho <span aria-hidden="true">✦</span></p>
+        <p class="data-destaque" id="data-destaque" hidden></p>
+      </div>
+
+      <div class="folhas folhas-esquerda" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <div class="folhas folhas-direita" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+      <a class="rolar" href="#passeio"><span class="roda" aria-hidden="true"></span>Role para baixo</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- Ilustração do Safári Baby -->
+    <section class="passeio" id="passeio" aria-labelledby="titulo-passeio">
+      <div class="passeio-capa">
+        <img class="passeio-ilustracao" src="/assets/safari-baby.webp" alt="Filhotes de girafa, zebra, leão, elefante e rinoceronte brincam entre o capim e as acácias da savana." width="1440" height="960" loading="lazy">
+        <div class="passeio-titulo">
+          <h2 id="titulo-passeio">Safári Baby</h2>
+          <a class="passeio-link" href="#confirmar">Ir para a confirmação</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Confirmação de presença -->
+    <section class="convite" id="confirmar" aria-labelledby="titulo-confirmacao">
+      <div class="intro">
+        <div class="selo" aria-hidden="true">✦</div>
+        <p class="chapeu">ANIVERSÁRIO DO ISAAC</p>
+        <h2 id="titulo-confirmacao">Confirme sua presença</h2>
+        <p class="descricao">Escolha o nome principal do seu convite e marque quem vai à festa.</p>
+        <ul id="detalhes-festa" class="detalhes" aria-label="Informações da festa" hidden></ul>
+      </div>
+
+      <form id="formulario" class="cartao">
+        <p id="modo-demo" class="aviso" hidden>Lista de exemplo. O envio nesta versão é simulado.</p>
+
+        <label class="rotulo" for="familia">Nome principal do convite</label>
+        <div class="select-wrap">
+          <select id="familia" name="familia" required disabled>
+            <option value="">Carregando convidados…</option>
+          </select>
+        </div>
+
+        <fieldset id="grupo" hidden>
+          <legend>Quem vai à festa?</legend>
+          <div id="pessoas" class="pessoas"></div>
+        </fieldset>
+
+        <button type="submit" id="enviar" disabled>Confirmar presença</button>
+        <p id="status" class="status" role="status" aria-live="polite" hidden></p>
+        <noscript><p>Ative o JavaScript para escolher seu convite e confirmar presença.</p></noscript>
+      </form>
+    </section>
+
+    <!-- Local da festa, preenchido com os dados de data/festa.json -->
+    <section class="local-festa" id="local" aria-labelledby="titulo-local" hidden>
+      <div class="local-cabecalho">
+        <p class="chapeu">LOCAL DA FESTA</p>
+        <h2 id="titulo-local"></h2>
+        <address id="endereco-festa"></address>
+        <a class="local-rota" id="rota-festa" target="_blank" rel="noopener noreferrer">Como chegar</a>
+      </div>
+      <iframe class="local-mapa" id="mapa-festa" title="Mapa do local da festa" loading="lazy" allowfullscreen></iframe>
+    </section>
+  </main>
+
+  <footer><span aria-hidden="true">✦</span> Safári do Isaac <span aria-hidden="true">·</span> 1 aninho</footer>
+</body>
+</html>

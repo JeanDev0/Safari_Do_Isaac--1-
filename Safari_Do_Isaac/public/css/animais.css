@@ -1,0 +1,108 @@
+/* 1. Macacos em cipós na abertura */
+
+.macacos {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  transform: translateY(calc(-14% * var(--progresso, 0)));
+}
+
+.cipo {
+  position: absolute;
+  width: clamp(12rem, 29vw, 29rem);
+  top: -1.5rem;
+  transform-origin: var(--pivo) 3%;
+  animation: balancar var(--periodo) ease-in-out var(--fase) infinite;
+}
+
+.cipo img { display: block; width: 100%; height: auto; }
+
+.cipo-esquerdo {
+  --pivo: 59%;
+  --inicio: -8deg;
+  --fim: 9deg;
+  --periodo: 5.6s;
+  --fase: -1.3s;
+  left: clamp(-2rem, 2.8vw, 4rem);
+}
+
+.cipo-direito {
+  --pivo: 42%;
+  --inicio: 10deg;
+  --fim: -7deg;
+  --periodo: 6.5s;
+  --fase: -3.9s;
+  right: clamp(-2rem, 2.5vw, 4rem);
+}
+
+@keyframes balancar {
+  0%, 100% { transform: rotate(var(--inicio)); }
+  50% { transform: rotate(var(--fim)); }
+}
+
+/* 2. Cena da savana */
+
+.passeio {
+  position: relative;
+  background: var(--areia);
+  margin-top: 1.6rem;
+  padding-top: clamp(1.3rem, 4vw, 3.3rem);
+  container-type: inline-size;
+  overflow: hidden;
+}
+
+.passeio-capa {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  background: var(--verde-escuro);
+  box-shadow: 0 1rem 2rem #58391d28;
+}
+.passeio-ilustracao {
+  width: 100%;
+  /* A altura usa a largura anterior, com as margens e o limite de 74rem. */
+  height: calc(min(100cqw - 2rem, 74rem) * 2 / 3);
+  object-fit: cover;
+  object-position: center 44%;
+  display: block;
+}
+.passeio-titulo {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: .7rem 1.5rem;
+  align-items: center;
+  padding: 1rem clamp(1rem, 4vw, 2.5rem) 1.25rem;
+  color: var(--creme);
+}
+.passeio-titulo h2 { font-size: clamp(1.95rem, 4.2vw, 3.5rem); margin: 0; }
+.passeio-link {
+  border: 1px solid #f6c969bf;
+  border-radius: 2rem;
+  padding: .65rem 1rem;
+  color: var(--creme);
+  font-weight: 800;
+  text-decoration: none;
+}
+.passeio-link:is(:hover, :focus-visible) { border-color: var(--dourado); color: var(--dourado); }
+.passeio-link:focus-visible { outline-color: var(--dourado); }
+
+/* 3. Ajustes de tela e preferência de movimento */
+
+@media (max-width: 680px) {
+  .cipo { width: min(47vw, 15rem); top: -.7rem; }
+  .cipo-esquerdo { left: 0; }
+  .cipo-direito { right: 0; }
+  .passeio-titulo { padding: .9rem 1rem 1rem; }
+}
+
+@media (max-height: 560px) and (orientation: landscape) {
+  .cipo { width: min(25vw, 38svh); }
+  .cipo-esquerdo { left: 3vw; }
+  .cipo-direito { right: 3vw; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .macacos { transform: none; }
+  .cipo { animation: none; }
+}
