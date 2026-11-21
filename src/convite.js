@@ -1,4 +1,5 @@
 import { readFile } from 'node:fs/promises';
+export { consultarConvite as default } from '../src/rsvp.js';
 
 // Os arquivos ficam no servidor. O navegador recebe apenas os campos da lista.
 export async function carregarDados() {

@@ -1,12 +1,9 @@
 import { createServer } from 'node:http';
 import { readFile } from 'node:fs/promises';
 import { parseArgs } from 'node:util';
-import { carregarDados, validarPresenca } from './src/convite.js';
-import { configurarEmail } from './src/email.js';
+import { confirmarPresenca, consultarConvite, emDemonstracao, json } from './src/rsvp.js';
 
 // 1. Configuração e arquivos públicos
-const convite = await carregarDados();
-const email = configurarEmail(process.env);
 const { values: opcoes } = parseArgs({
   options: {
     host: { type: 'string', default: '0.0.0.0' },
@@ -35,12 +32,12 @@ const servidor = createServer(async (req, res) => {
   try {
     const rota = new URL(req.url, 'http://localhost').pathname;
 
-    if (req.method === 'GET' && rota === '/api/convite') {
-      return json(res, 200, { ...convite, demonstracao: email.demonstracao });
+    if (rota === '/api/convite') {
+      return await consultarConvite(req, res);
     }
 
-    if (req.method === 'POST' && rota === '/api/confirmacoes') {
-      return await confirmar(req, res);
+    if (rota === '/api/confirmacoes') {
+      return await confirmarPresenca(req, res);
     }
 
     if (req.method === 'GET' || req.method === 'HEAD') {
@@ -60,56 +57,6 @@ const servidor = createServer(async (req, res) => {
   }
 });
 
-async function confirmar(req, res) {
-  if (req.headers['content-type']?.split(';')[0].trim() !== 'application/json') {
-    return json(res, 415, { mensagem: 'Formato de envio inválido.' });
-  }
-
-  let dados;
-  try {
-    dados = await lerCorpo(req);
-  } catch (erro) {
-    return json(res, erro.status ?? 400, { mensagem: 'Não foi possível ler a seleção.' });
-  }
-
-  const presenca = validarPresenca(dados, convite.familias);
-  if (!presenca) {
-    return json(res, 400, { mensagem: 'Selecione um convite e marque as pessoas da lista que vão à festa.' });
-  }
-
-  try {
-    await email.enviar(presenca);
-  } catch (erro) {
-    console.error(erro.message);
-    return json(res, 502, { mensagem: 'Não foi possível enviar a confirmação. Tente novamente em instantes.' });
-  }
-
-  return json(res, 200, {
-    confirmados: presenca.confirmados,
-    demonstracao: email.demonstracao
-  });
-}
-
-// 3. Leitura e resposta HTTP
-async function lerCorpo(req) {
-  const partes = [];
-  let tamanho = 0;
-  for await (const parte of req.iterator({ destroyOnReturn: false })) {
-    tamanho += parte.length;
-    if (tamanho > 16_384) {
-      req.resume();
-      throw Object.assign(new Error('Corpo muito grande'), { status: 413 });
-    }
-    partes.push(parte);
-  }
-  return JSON.parse(Buffer.concat(partes).toString('utf8'));
-}
-
-function json(res, status, dados) {
-  res.writeHead(status, { 'Content-Type': 'application/json; charset=utf-8', 'Cache-Control': 'no-store' });
-  res.end(JSON.stringify(dados));
-}
-
 servidor.listen(porta, opcoes.host, () => {
-  console.log(`Safári do Isaac em http://localhost:${servidor.address().port} (${email.demonstracao ? 'demonstração' : 'envio de e-mail ativo'})`);
+  console.log(`Safári do Isaac em http://localhost:${servidor.address().port} (${emDemonstracao() ? 'demonstração' : 'envio de e-mail ativo'})`);
 });
